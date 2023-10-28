@@ -5,6 +5,7 @@ import com.narainox.blog.model.User;
 import com.narainox.blog.payloads.UserDto;
 import com.narainox.blog.repository.UserRepo;
 import com.narainox.blog.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public UserDto createUser(UserDto userDto) {
         User user=dtoToUser(userDto);
@@ -26,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto, Integer userId) {
-        User user=userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"," Id ",userId));
+        User user=userRepo.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User"," Id ", userId));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setAbout(userDto.getAbout());
@@ -61,22 +65,30 @@ public class UserServiceImpl implements UserService {
 
     private User dtoToUser(UserDto userDto)
     {
+        User user=modelMapper.map(userDto,User.class);
+        /*
         User user=new User();
         user.setId(userDto.getId());
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
         user.setAbout(userDto.getAbout());
+
+         */
         return user;
     }
     private UserDto userToDto(User user)
     {
-        UserDto userDto=new UserDto();
+        UserDto userDto=modelMapper.map(user,UserDto.class);
+
+        /*        new UserDto();
         userDto.setId(user.getId());
         userDto.setName(user.getName());
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setAbout(user.getAbout());
+        */
+
         return userDto;
     }
 }

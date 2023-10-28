@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 public class ResourceNotFoundException extends RuntimeException{
     private String resource;
     private String type;
-    private Object value;
+    private Integer value;
 
-    public ResourceNotFoundException(String resource, String type, Object value) {
-        super(String.format("%s Not Found With %s : %s"+resource,type,value));
+    public ResourceNotFoundException(String resource, String type, Integer value) {
+        super(String.format("%s Not Found With %s : %d",resource,type,value));
         this.resource = resource;
         this.type = type;
         this.value = value;
